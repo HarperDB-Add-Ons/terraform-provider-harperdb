@@ -1,3 +1,5 @@
+github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230323104826-4f5aca3e0b51 h1:Y9drHoaVAMEzaOBzhMdRBXh/mm8cmdNtSYoeUYp8EjA=
+github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230323104826-4f5aca3e0b51/go.mod h1:PMz3ilLqCPTecGyJ8UXc9aMWnWrBf0kwQv4e6IGLE/g=
 github.com/Masterminds/goutils v1.1.1 h1:5nUrii3FMTL5diU80unEVvNevw1nH4+ZV4DSLVJLSYI=
 github.com/Masterminds/goutils v1.1.1/go.mod h1:8cTjp+g8YejhMuvIA5y2vz3BpJxksy863GQaJW2MFNU=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
@@ -44,6 +46,8 @@ github.com/go-git/go-billy/v5 v5.3.1/go.mod h1:pmpqyWchKfYfrkb/UVH4otLvyi/5gJlGI
 github.com/go-git/go-git-fixtures/v4 v4.2.1/go.mod h1:K8zd3kDUAykwTdDCr+I0per6Y6vMiRR/nnVTBtavnB0=
 github.com/go-git/go-git/v5 v5.4.2 h1:BXyZu9t0VkbiHtqrsvdq39UDhGJTl1h55VW6CSC4aY4=
 github.com/go-git/go-git/v5 v5.4.2/go.mod h1:gQ1kArt6d+n+BGd+/B/I74HwRTLhth2+zti4ihgckDc=
+github.com/go-resty/resty/v2 v2.3.0 h1:JOOeAvjSlapTT92p8xiS19Zxev1neGikoHsXJeOq8So=
+github.com/go-resty/resty/v2 v2.3.0/go.mod h1:UpN9CgLZNsv4e9XG50UU8xdI0F43UQ4HmxLBDwaroHU=
 github.com/go-test/deep v1.0.3 h1:ZrJSEWsXzPOxaZnFteGEfooLba+ju3FYIbOrS+rQd68=
 github.com/golang/protobuf v1.1.0/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
@@ -103,6 +107,8 @@ github.com/hashicorp/terraform-plugin-sdk/v2 v2.26.1 h1:G9WAfb8LHeCxu7Ae8nc1agZl
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.26.1/go.mod h1:xcOSYlRVdPLmDUoqPhO9fiO/YCN/l6MGYeTzGt5jgkQ=
 github.com/hashicorp/terraform-plugin-testing v1.2.0 h1:pASRAe6BOZFO4xSGQr9WzitXit0nrQAYDk8ziuRfn9E=
 github.com/hashicorp/terraform-plugin-testing v1.2.0/go.mod h1:+8bp3O7xUb1UtBcdknrGdVRIuTw4b62TYSIgXHqlyew=
+github.com/hashicorp/terraform-provider-scaffolding-framework v0.0.0-20230327170713-abeef77b7701 h1:vbp/6FkhxtbWtEzz8W24ryLXRO0IXaohOpqPtEj2GnU=
+github.com/hashicorp/terraform-provider-scaffolding-framework v0.0.0-20230327170713-abeef77b7701/go.mod h1:Uhey1rvW0GdkFx5CcC0M280aazRF4DOszVlIGKY1h6Q=
 github.com/hashicorp/terraform-registry-address v0.2.0 h1:92LUg03NhfgZv44zpNTLBGIbiyTokQCDcdH5BhVHT3s=
 github.com/hashicorp/terraform-registry-address v0.2.0/go.mod h1:478wuzJPzdmqT6OGbB/iH82EDcI8VFM4yujknh/1nIs=
 github.com/hashicorp/terraform-svchost v0.0.1 h1:Zj6fR5wnpOHnJUmLyWozjMeDaVuE+cstMPj41/eKmSQ=
@@ -218,6 +224,7 @@ golang.org/x/mod v0.8.0/go.mod h1:iBbtSCu2XBx23ZKBPSOrRkjjQPZFPuis4dIYUhu/chs=
 golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3/go.mod h1:t9HGtf8HONx5eT2rtn7q6eTqICYqUVnKs3thJo3Qplg=
 golang.org/x/net v0.0.0-20190603091049-60506f45cf65/go.mod h1:HSz+uSET+XFnRR8LxR5pz3Of3rY3CfYBVs4xY44aLks=
 golang.org/x/net v0.0.0-20190620200207-3b0461eec859/go.mod h1:z5CRVTTTmAJ677TzLLGU+0bjPO0LkuOLi4/5GtJWs/s=
+golang.org/x/net v0.0.0-20200513185701-a91f0712d120/go.mod h1:qpuaurCH72eLCgpAm/N6yyVIVM9cpaDIP3A8BGJEC5A=
 golang.org/x/net v0.0.0-20210226172049-e18ecbb05110/go.mod h1:m0MpNAwzfU5UDzcl9v0D8zg8gWTRqZa9RBIspLL5mdg=
 golang.org/x/net v0.0.0-20210326060303-6b1517762897/go.mod h1:uSPa2vr4CLtc/ILN5odXGNXS6mhrKVzTaCXzk9m6W3k=
 golang.org/x/net v0.0.0-20220722155237-a158d28d115b/go.mod h1:XRhObCWvk6IyKnWLug+ECip1KBveYUHfp+8e9klMJ9c=
@@ -235,6 +242,7 @@ golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20200116001909-b77594299b42/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200223170610-d5e6a3e2c0ae/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20210320140829-1e4c9ba3b0c4/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20210324051608-47abb6519492/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=

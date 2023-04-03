@@ -33,3 +33,11 @@ website/vendor
 
 # Keep windows files with windows line endings
 *.winfile eol=crlf
+
+# Ignore generated
+docs/
+# devshell.toml
+.envrc
+# flake.lock
+# flake.nix
+.direnv/
