@@ -31,16 +31,6 @@ func TestAccSchemaResource(t *testing.T) {
 	})
 }
 
-func testAccProviderTF(host, user, pass string) string {
-	return fmt.Sprintf(`
-		provider "harperdb" {
-			endpoint = "%s"
-			username = "%s"
-			password = "%s"
-		}
-	`, host, user, pass)
-}
-
 func testAccSchemaResourceConfig(host, user, pass, configurableAttribute string) string {
 	return fmt.Sprintf(`
 	%s
@@ -48,5 +38,5 @@ func testAccSchemaResourceConfig(host, user, pass, configurableAttribute string)
 resource "harperdb_schema" "test" {
   name = "%s"
 }
-`, testAccProviderTF(host, user, pass), configurableAttribute)
+`, testAccProviderTF(), configurableAttribute)
 }

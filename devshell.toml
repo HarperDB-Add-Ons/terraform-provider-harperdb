@@ -1,0 +1,15 @@
+# https://numtide.github.io/devshell
+[[commands]]
+package = "terraform"
+
+[[env]]
+name = "HARPERDB_ENDPOINT"
+value = "https://terraform-test-moredhel.harperdbcloud.com"
+
+[[env]]
+name = "HARPERDB_USERNAME"
+value = "moredhel"
+
+[[env]]
+name = "HARPERDB_PASSWORD"
+value = "question"

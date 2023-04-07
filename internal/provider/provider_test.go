@@ -1,6 +1,8 @@
 package provider
 
 import (
+	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -21,6 +23,19 @@ func testAccPreCheck(t *testing.T) {
 	// function.
 	t.Log("starting pre-check")
 
+}
+
+func testAccProviderTF() string {
+	host := os.Getenv("HARPERDB_ENDPOINT")
+	user := os.Getenv("HARPERDB_USERNAME")
+	pass := os.Getenv("HARPERDB_PASSWORD")
+	return fmt.Sprintf(`
+		provider "harperdb" {
+			endpoint = "%s"
+			username = "%s"
+			password = "%s"
+		}
+	`, host, user, pass)
 }
 
 func TestHelloWorld(t *testing.T) {
