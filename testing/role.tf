@@ -1,7 +1,5 @@
 resource "harperdb_role" "basic" {
   name = "reader_role"
-  super_user = false
-  cluster_user = false
   schema_permissions = {
     dogs2 = {
       tables = {
@@ -11,7 +9,7 @@ resource "harperdb_role" "basic" {
           attribute_permissions = [
             {
               name = "attributed"
-              read = true
+              read = false
             }
           ]
         }

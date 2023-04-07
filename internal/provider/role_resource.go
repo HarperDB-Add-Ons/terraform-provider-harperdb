@@ -245,8 +245,16 @@ func (r *RoleResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
+	perm := r.constructPermission(data)
+
+	role, err := r.client.AlterRole(old_data.ID.ValueString(), data.Name.ValueString(), perm)
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create role, got error: %s !! %+v", err, role))
+		return
+	}
+
 	// We only need to preserve the ID.
-	data.ID = old_data.ID
+	data.ID = types.StringValue(role.ID)
 
 	// We simply update as we don't need to sync changes.
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

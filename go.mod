@@ -3,7 +3,7 @@ module github.com/harperdb-add-ons/terraform-provider-harperdb
 go 1.19
 
 require (
-	github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230407103256-8766eb6bd42e
+	github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230407122016-84382d9ddc98
 	github.com/hashicorp/terraform-plugin-docs v0.14.1
 	github.com/hashicorp/terraform-plugin-framework v1.2.0
 	github.com/hashicorp/terraform-plugin-go v0.15.0
