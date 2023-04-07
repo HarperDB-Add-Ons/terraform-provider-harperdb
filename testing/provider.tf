@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "harperdb" {
-  endpoint = "https://terraform-test-moredhel.harperdbcloud.com"
-  username = "moredhel"
-  password = "question"
+  endpoint = var.db_endpoint
+  username = var.db_username
+  password = var.db_password
 }

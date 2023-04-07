@@ -16,7 +16,8 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &SchemaResource{}
-var _ resource.ResourceWithImportState = &SchemaResource{}
+
+// var _ resource.ResourceWithImportState = &SchemaResource{}
 
 func NewSchemaResource() resource.Resource {
 	return &SchemaResource{}

@@ -132,8 +132,25 @@ func (r *UserResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 }
 
 func (r *UserResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddError("updating User unsupported", "")
-	return
+	var data *UserResourceModel
+
+	// Read Terraform prior state data into the model
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// We only need to preserve the ID.
+	err := r.client.AlterUser(data.Username.ValueString(), data.Password.ValueString(), data.Role.ValueString(), data.Active.ValueBool())
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to update User, got error: %s", err))
+		return
+	}
+
+	data.ID = data.Username
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
 func (r *UserResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

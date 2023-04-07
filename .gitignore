@@ -41,3 +41,4 @@ docs/
 # flake.lock
 # flake.nix
 .direnv/
+*/vars.tfvars

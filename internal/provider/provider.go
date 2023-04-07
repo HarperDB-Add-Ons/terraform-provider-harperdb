@@ -78,8 +78,9 @@ func (p *HarperDBProvider) Configure(ctx context.Context, req provider.Configure
 func (p *HarperDBProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewSchemaResource,
-		NewPermissionResource,
-		// NewUserResource,
+		NewRoleResource,
+		NewTableResource,
+		NewUserResource,
 	}
 }
 

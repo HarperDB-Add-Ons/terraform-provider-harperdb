@@ -15,16 +15,10 @@ func TestAccUserResource(t *testing.T) {
 
 		Steps: []resource.TestStep{
 			{
-				Config: testAccUserResourceConfig("user1", "password", "", true),
+				Config: testAccUserResourceConfig("user1", "password", "cluster_user", true),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("harperdb_user.test", "name", "user1"),
-					resource.TestCheckResourceAttr("harperdb_user.test", "role", ""),
-				),
-			},
-			{
-				Config: testAccUserResourceConfig("user2", "password", "", false),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("harperdb_user.test", "name", "two"),
+					resource.TestCheckResourceAttr("harperdb_user.test", "username", "user1"),
+					resource.TestCheckResourceAttr("harperdb_user.test", "role", "cluster_user"),
 				),
 			},
 		},

@@ -28,11 +28,12 @@ type RoleResource struct {
 
 // RoleResourceModel describes the resource data model.
 type RoleResourceModel struct {
-	ID       types.String `tfsdk:"id"`
-	Role     types.String `tfsdk:"role"`
-	Rolename types.String `tfsdk:"Rolename"`
-	Password types.String `tfsdk:"password"`
-	Active   types.Bool   `tfsdk:"active"`
+	ID                types.String `tfsdk:"id"`   // Derived from the resource-name
+	Name              types.String `tfsdk:"name"` // Role name
+	SuperUser         types.Bool   `tfsdk:"super_user"`
+	ClusterUser       types.Bool   `tfsdk:"cluster_user"`
+	SchemaPermissions types.Map    `tfsdk:"schema_permissions"`
+	// TablePermissions  types.Map    `tfsdk:"table_permissions"`
 }
 
 func (r *RoleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -40,33 +41,87 @@ func (r *RoleResource) Metadata(ctx context.Context, req resource.MetadataReques
 }
 
 func (r *RoleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+	tableSchema := schema.MapNestedAttribute{
+		Optional: true,
+		NestedObject: schema.NestedAttributeObject{
+			Attributes: map[string]schema.Attribute{
+				"read": schema.BoolAttribute{
+					Optional: true,
+					Computed: true,
+					Default:  booldefault.StaticBool(false),
+				},
+				"insert": schema.BoolAttribute{
+					Optional: true,
+					Computed: true,
+					Default:  booldefault.StaticBool(false),
+				},
+				"update": schema.BoolAttribute{
+					Optional: true,
+					Computed: true,
+					Default:  booldefault.StaticBool(false),
+				},
+				"delete": schema.BoolAttribute{
+					Optional: true,
+					Computed: true,
+					Default:  booldefault.StaticBool(false),
+				},
+				"attribute_permissions": schema.ListNestedAttribute{
+					Optional: true,
+					NestedObject: schema.NestedAttributeObject{
+						Attributes: map[string]schema.Attribute{
+							"name": schema.StringAttribute{
+								Required: true,
+							},
+							"read": schema.BoolAttribute{
+								Optional: true,
+								Computed: true,
+								Default:  booldefault.StaticBool(false),
+							},
+							"insert": schema.BoolAttribute{
+								Optional: true,
+								Computed: true,
+								Default:  booldefault.StaticBool(false),
+							},
+							"update": schema.BoolAttribute{
+								Optional: true,
+								Computed: true,
+								Default:  booldefault.StaticBool(false),
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "Role resource",
+		MarkdownDescription: "Permission resource",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				MarkdownDescription: "ID of the Role",
 				Computed:            true,
 			},
-			"role": schema.StringAttribute{
-				MarkdownDescription: "Default (starting) Role",
+			"name": schema.StringAttribute{
+				MarkdownDescription: "Name of the Role",
 				Required:            true,
 			},
-			"Rolename": schema.StringAttribute{
-				MarkdownDescription: "Rolename",
-				Required:            true,
-			},
-			"password": schema.StringAttribute{
-				MarkdownDescription: "Role password",
-				Required:            true,
-				Sensitive:           true,
-			},
-			"active": schema.BoolAttribute{
-				MarkdownDescription: "Is the account active",
-				Computed:            true,
+			"super_user": schema.BoolAttribute{
+				MarkdownDescription: "Is super user",
 				Optional:            true,
-				Default:             booldefault.StaticBool(true),
+			},
+			"cluster_user": schema.BoolAttribute{
+				MarkdownDescription: "is cluster user",
+				Optional:            true,
+			},
+			"schema_permissions": schema.MapNestedAttribute{
+				Optional: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"tables": tableSchema,
+					},
+				},
 			},
 		},
 	}
@@ -92,6 +147,49 @@ func (r *RoleResource) Configure(ctx context.Context, req resource.ConfigureRequ
 	r.client = client
 }
 
+func (r *RoleResource) constructPermission(data *RoleResourceModel) harperdb.Permission {
+	perm := harperdb.Permission{}
+	perm.SetClusterUser(data.ClusterUser.ValueBool())
+	perm.SetSuperUser(data.SuperUser.ValueBool())
+
+	schemas := data.SchemaPermissions.Elements()
+
+	for name, schema := range schemas {
+		tables := map[string]harperdb.TablePermission{}
+
+		tablesRaw := schema.(types.Object).Attributes()["tables"].(types.Map).Elements()
+		for tname, traw := range tablesRaw {
+			attr := traw.(types.Object).Attributes()
+			var attributePermissions []harperdb.AttributePermissions
+			attributes := attr["attribute_permissions"].(types.List).Elements()
+			for _, attribute := range attributes {
+				a := attribute.(types.Object).Attributes()
+				attributePermissions = append(attributePermissions, harperdb.AttributePermissions{
+					AttributeName: a["name"].(types.String).ValueString(),
+					Read:          a["read"].(types.Bool).ValueBool(),
+					Insert:        a["insert"].(types.Bool).ValueBool(),
+					Update:        a["update"].(types.Bool).ValueBool(),
+				})
+
+			}
+			tables[tname] = harperdb.TablePermission{
+				Read:                 attr["read"].(types.Bool).ValueBool(),
+				Insert:               attr["insert"].(types.Bool).ValueBool(),
+				Update:               attr["update"].(types.Bool).ValueBool(),
+				Delete:               attr["delete"].(types.Bool).ValueBool(),
+				AttributePermissions: attributePermissions,
+			}
+		}
+
+		schemaPermission := harperdb.SchemaPermission{
+			Tables: tables,
+		}
+		perm.AddSchemaPermission(name, schemaPermission)
+	}
+
+	return perm
+}
+
 func (r *RoleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data *RoleResourceModel
 
@@ -102,14 +200,15 @@ func (r *RoleResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	// if err != nil {
-	// 	resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create Role, got error: %s", err))
-	// 	return
-	// }
+	roleName := data.Name.ValueString()
+	perm := r.constructPermission(data)
 
-	// No internal ID is exposed for Roles
-	data.ID = data.Rolename
-
+	role, err := r.client.AddRole(roleName, perm)
+	if err != nil {
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to create role, got error: %s !! %+v", err, role))
+		return
+	}
+	data.ID = types.StringValue(role.ID)
 	// Write logs using the tflog package
 	// Documentation: https://terraform.io/plugin/log
 	tflog.Trace(ctx, "created a Role resource")
@@ -122,7 +221,6 @@ func (r *RoleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	var data *RoleResourceModel
 
 	// Read Terraform prior state data into the model
-	// The id and the name are the only configurable elements.
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
 	if resp.Diagnostics.HasError() {
@@ -131,8 +229,28 @@ func (r *RoleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 }
 
 func (r *RoleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddError("updating Role unsupported", "")
-	return
+	var data *RoleResourceModel
+	var old_data *RoleResourceModel
+
+	// Read Terraform prior state data into the model
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &old_data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// We only need to preserve the ID.
+	data.ID = old_data.ID
+
+	// We simply update as we don't need to sync changes.
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+
 }
 
 func (r *RoleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -145,11 +263,14 @@ func (r *RoleResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		return
 	}
 
-	err := r.client.DropRole(data.Rolename.ValueString())
+	id := data.ID.ValueString()
+	err := r.client.DropRole(id)
 	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to drop Role, got error: %s", err))
+		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Unable to drop User, got error: %s", err))
 		return
 	}
+
+	// This is a state-only resource. It doesn't have a direct analogy in HarperDB.
 }
 
 func (r *RoleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
