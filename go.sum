@@ -4,6 +4,8 @@ github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230407103256-8766eb6bd42e h1:JC17K1B
 github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230407103256-8766eb6bd42e/go.mod h1:PMz3ilLqCPTecGyJ8UXc9aMWnWrBf0kwQv4e6IGLE/g=
 github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230407122016-84382d9ddc98 h1:fTVtqTxHiP8jF6ABjh3zI2pJsmArr6+a0EfHy2iBvso=
 github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230407122016-84382d9ddc98/go.mod h1:PMz3ilLqCPTecGyJ8UXc9aMWnWrBf0kwQv4e6IGLE/g=
+github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230505120302-1f8a26504de7 h1:bKfLxRnWJaOQPpQTO/O76uBR9HEHQ97FQs3tWtJYOx0=
+github.com/HarperDB-Add-Ons/sdk-go v0.0.0-20230505120302-1f8a26504de7/go.mod h1:PMz3ilLqCPTecGyJ8UXc9aMWnWrBf0kwQv4e6IGLE/g=
 github.com/Masterminds/goutils v1.1.1 h1:5nUrii3FMTL5diU80unEVvNevw1nH4+ZV4DSLVJLSYI=
 github.com/Masterminds/goutils v1.1.1/go.mod h1:8cTjp+g8YejhMuvIA5y2vz3BpJxksy863GQaJW2MFNU=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
